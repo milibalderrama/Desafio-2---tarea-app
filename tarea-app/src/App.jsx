@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTasks, setNewTask] = useState(``);
 
+  const handleInputChange = (event) => {
+    setNewTask(event.target.value);
+  };
+  
+  const handleAddTask = () => {
+    if (newTasks.trim() !== ``){
+      setTasks([...tasks, newTasks]);
+      setNewTask(``)
+    }
+  };
+
+  const handleDeleteTask =(index) => {
+    const updatedTasks =[...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);  
+  }
+  
   return (
     <>
     <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -47,24 +64,27 @@ function App() {
     </div>
   </div>
 </nav>
+     
+     
       <div>
 
-        <h1>Tarea Desafio 2</h1>
-
-
-
+        <h1>Lista de los ingresantes</h1>
 
         <input
           type="text"
           placeholder="Agregar nombre"
-        // value={(newTasks)} 
-        // onChange={(handleInputChange)} 
+          value={newTasks} 
+          onChange={handleInputChange} 
         />
-        <button
-
-        // onclick={handleInputChange}
-
-> Agregar nombre</button>
+        <button onClick={handleAddTask}> Agregar nombre</button>
+            <ul>
+            {tasks.map((task, index)  => (
+              <li key={index}>
+                {task}
+                <button onClick={() => handleDeleteTask(index)}>Eliminar</button>
+              </li>
+            ))}
+            </ul>
         <ul>
           {tasks.map((task, index) => {
 
@@ -81,6 +101,6 @@ function App() {
         </ul>
       </div> 
       </>
-      )
+      );
 }
 export default App
